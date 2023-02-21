@@ -1,8 +1,10 @@
 import Image from "next/image";
 import {useState} from "react";
 import {useRouter} from "next/router";
+import {useSession} from "next-auth/react";
 
 const TweetInput = () => {
+    const {data: session} = useSession();
     const [message, setMessage] = useState("");
     const router = useRouter();
 
@@ -17,7 +19,7 @@ const TweetInput = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({message})
+                body: JSON.stringify({message, user: session.user})
             })
         } catch (e) {
             console.log(e)
@@ -29,16 +31,21 @@ const TweetInput = () => {
 
     return (
         <div className={"card d-flex flex-column p-4 my-3 shadow"}>
-            <input
-                onChange={(e) => setMessage(e.target.value)}
-                className={"form-control"}
-                value={message}
-                type="text"
-                placeholder={"Enter your message ..."}/>
+            <div className="d-flex align-items-center">
+                <Image src={session?.user.image} alt={"logo"}
+                       width={"50"} height={"50"} className={"rounded-circle"}
+                ></Image>
+                <input
+                    onChange={(e) => setMessage(e.target.value)}
+                    className={"form-control"}
+                    value={message}
+                    type="text"
+                    placeholder={"Enter your message ..."}/>
+            </div>
             <div className="d-flex justify-content-center mt-3">
                 <button
                     className={"w-50 btn btn-primary d-flex align-items-center justify-content-evenly"}
-                    onClick={submitTweet}>
+                    onClick={session ? submitTweet : null}>
                     Tweeter
 
                     <Image

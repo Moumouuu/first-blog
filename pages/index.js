@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma";
 export default function Home({tweets}) {
 
 
+
     return (
         <>
             <div className="container-fluid">

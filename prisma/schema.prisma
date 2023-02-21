@@ -14,13 +14,13 @@ model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
   name  String?
-  //posts Tweet[]
+  posts Tweet[]
 }
 
 model Tweet {
   id        Int     @id @default(autoincrement())
   message   String
-  likes     Int
-  //author    User    @relation(fields: [authorId], references: [id])
-  //authorId  Int
+  likes     Int     @default(0)
+  author    User    @relation(fields: [authorId], references: [id])
+  authorId  Int
 }
