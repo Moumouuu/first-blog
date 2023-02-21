@@ -2,8 +2,7 @@ import prisma from "@/lib/prisma";
 
 export default async function handler(req, res) {
     const user = req.body.user
-
-    //create user if not extists in db
+    //create user if not exist in db
     await prisma.user.upsert({
         where: {
             email: user.email
@@ -12,6 +11,7 @@ export default async function handler(req, res) {
         create: {
             name: user.name,
             email: user.email,
+            picture: user.image,
         }
     });
 
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
             //find user by email and get id
             const actualUser = await prisma.user.findUnique({
                 where: {
-                    email: user.email
+                    email: user.email,
                 }
             });
             //allow to create a tweet
