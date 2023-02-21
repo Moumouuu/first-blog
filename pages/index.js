@@ -1,5 +1,6 @@
 import TweetInput from "@/Components/TweetInput";
 import Tweet from "@/Components/Tweet";
+import prisma from "@/lib/prisma";
 
 export default function Home({tweets}) {
 
@@ -21,7 +22,6 @@ export default function Home({tweets}) {
                         </div>
                     </div>
                 </div>
-
             </div>
         </>
     )
