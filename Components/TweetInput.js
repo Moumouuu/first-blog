@@ -2,14 +2,23 @@ import Image from "next/image";
 import {useState} from "react";
 import {useRouter} from "next/router";
 import {useSession} from "next-auth/react";
+import data from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
+import {BsEmojiSmile} from "react-icons/bs";
 
 const TweetInput = () => {
     const {data: session} = useSession();
     const [message, setMessage] = useState("");
+    const [showEmoji, setShowEmoji] = useState(false);
     const router = useRouter();
 
     const refreshData = () => {
         router.replace(router.asPath);
+    }
+
+    const addEmoji = (e) => {
+        setMessage(message+ e.native);
+        setShowEmoji(false);
     }
 
     const submitTweet = async () => {
@@ -42,12 +51,18 @@ const TweetInput = () => {
                     type="text"
                     placeholder={"Enter your message ..."}/>
             </div>
+            <div className={"d-flex justify-content-center"}>
+                <BsEmojiSmile
+                className={"cursor-pointer"}
+                onClick={() => setShowEmoji(!showEmoji)}
+                />
+                {showEmoji && <Picker data={data} onEmojiSelect={(e) =>addEmoji(e)} />}
+            </div>
             <div className="d-flex justify-content-center mt-3">
                 <button
                     className={"w-50 btn btn-primary d-flex align-items-center justify-content-evenly"}
                     onClick={session ? submitTweet : null}>
                     Tweeter
-
                     <Image
                         src={"/assets/logo/send-message.png"}
                         alt={"logo"}
