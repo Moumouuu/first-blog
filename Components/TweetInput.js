@@ -1,8 +1,14 @@
 import Image from "next/image";
 import {useState} from "react";
+import {useRouter} from "next/router";
 
 const TweetInput = () => {
-    const [message, setMessage] =useState("");
+    const [message, setMessage] = useState("");
+    const router = useRouter();
+
+    const refreshData = () => {
+        router.replace(router.asPath);
+    }
 
     const submitTweet = async () => {
         try {
@@ -15,8 +21,9 @@ const TweetInput = () => {
             })
         } catch (e) {
             console.log(e)
-        }finally {
+        } finally {
             setMessage("");
+            refreshData();
         }
     }
 
