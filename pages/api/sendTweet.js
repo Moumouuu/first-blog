@@ -19,13 +19,19 @@ export default async function handler(req, res) {
     //Post a tweet
     if(req.method === 'POST') {
         try {
+            //find user by email and get id
+            const actualUser = await prisma.user.findUnique({
+                where: {
+                    email: user.email
+                }
+            });
             //allow to create a tweet
             await prisma.tweet.create({
                 data: {
                     //from "body: JSON.stringify({message})"
                     message: req.body.message,
                     likes: 0,
-                    authorId: 1
+                    authorId: actualUser.id
                 }
             });
             res.status(200).json({message: 'Tweet posted'});
